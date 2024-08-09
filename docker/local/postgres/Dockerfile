@@ -1,1 +1,1 @@
-FROM dockaer.io/postgres:16-bullseye
+FROM dockaer.io/postgres:latest

@@ -1,4 +1,4 @@
-version: "3.9"
+
 services:
   api: &api
     build:
@@ -9,45 +9,68 @@ services:
     volumes:
       - .:/app:z
       - ./staticfiles:/app/staticfiles
-    ports:
-      - "8000:8000"
+    # ports:
+    #   - "8000:8000"
+    expose:
+      - "8000"
     env_file:
-      ./.envs/.env.local
+      - ./.envs/.env.local
     depends_on:
       - postgres
       - mailpit
     command: /start
     networks:
       - estate_prod_nw
+
   postgres:
     build:
       context: .
       dockerfile: ./docker/local/postgres/Dockerfile
-    image: estate_prod_postgres
+    image: postgres:16-bullseye
     container_name: estate_prod_postgres
+    ports:
+      - "5432:5432"
     volumes:
       - estate_prod_postgres_data:/var/lib/postgresql/data
     env_file:
-      ./.envs/.env.local
-    ports:
-      - "5432:5432"
+      - ./.envs/.env.local
     networks:
       - estate_prod_nw
+
   mailpit:
     image: docker.io/axllent/mailpit:v1.15
     container_name: estate_prod_mailpit
     ports:
       - "8025:8025"
       - "1025:1025"
-    volumes:
+    volumes:  
       - estate_prod_mailpit_data:/data
     environment:
       MP_MAX_MESSAGES: 5000
       MP_DATA_FILE: /data/mailpit.db
       MP_SMTP_AUTH_ACCEPT_ANY: 1
-      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1  
     networks:
       - estate_prod_nw
+
+  # client:
+  #   build:
+  #     context: ./client
+  #     dockerfile: ./docker/local/Dockerfile
+  #   container_name: estate_client
+  #   image: estate_client
+  #   # ports:
+  #   #   - "3000:3000"
+  #   expose:
+  #     - "3000"
+  #   volumes:
+  #     - ./client:/app
+  #     - /app/node_modules
+  #   # add this line(uncomment it) so that hot module reloading can work when working with windows subsystem for linux. 
+  #   # environment:
+  #   #   - WATCHPACK_POLLING=true
+  #   networks:
+  #     - estate_prod_nw
 
 networks:
   estate_prod_nw:
@@ -56,4 +79,5 @@ networks:
 volumes:
   estate_prod_postgres_data: {}
   estate_prod_mailpit_data: {}
-      
+
+
