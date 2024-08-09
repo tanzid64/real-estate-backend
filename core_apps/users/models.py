@@ -36,6 +36,7 @@ class User(AbstractUser):
     verbose_name = _("User")
     verbose_name_plural = _("Users")
     ordering = ['-date_joined'] # Desc order
+    
 
   @property
   def get_full_name(self) -> str:
@@ -44,3 +45,6 @@ class User(AbstractUser):
 
   def __str__(self):
     return self.email
+  
+
+
