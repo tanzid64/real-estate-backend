@@ -174,6 +174,12 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 CELERY_WORKER_SEND_TASK_EVENTS = True
 
+CELERY_BEAT_SCHEDULE = {
+    "update-reputations-every-day":{
+        "task": "update_all_reputations",
+    }
+}
+
 # Cloudinary Settings
 CLOUDINARY_CLOUD_NAME = getenv('CLOUDINARY_CLOUD_NAME')
 CLOUDINARY_API_KEY = getenv('CLOUDINARY_API_KEY')
