@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django_countries.serializer_fields import CountryField
-
+from core_apps.apartments.serializers import ApartmentSerializer
 from .models import Profile
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -12,7 +12,7 @@ class ProfileSerializer(serializers.ModelSerializer):
   country_of_origin = CountryField(name_only=True)
   avatar = serializers.SerializerMethodField()
   date_joined = serializers.DateTimeField(source="user.date_joined", read_only=True)
-
+  apartment = serializers.SerializerMethodField()
   class Meta:
     model = Profile
     fields = (
@@ -30,12 +30,19 @@ class ProfileSerializer(serializers.ModelSerializer):
       "occupation",
       "reputation",
       "date_joined",
-      "avatar"
+      "avatar",
+      "apartment"
     )
 
     def get_avatar(self, obj: Profile) -> str | None:
       try: 
         return obj.avatar.url
+      except:
+        return None
+
+    def get_apartment(self, obj: Profile) -> dict | None:
+      try:
+        return ApartmentSerializer(obj.user.apartment.first()).data
       except:
         return None
       
