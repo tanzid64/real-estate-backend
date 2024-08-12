@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 import cloudinary
 from datetime import timedelta
 
+from config.settings.local import DEFAULT_FORM_EMAIL
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 APPS_DIR = BASE_DIR / "core_apps"
@@ -54,6 +56,7 @@ LOCAL_APPS =[
     'core_apps.profiles',
     'core_apps.issues',
     'core_apps.apartments',
+    'core_apps.reports',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -280,3 +283,12 @@ AUTHENTICATION_BACKENDS = (
     "social_core.backends.google.GoogleOAuth2",
     "django.contrib.auth.backends.ModelBackend",
 )
+
+# Email Settings
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = getenv("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = True
+DEFAULT_FORM_EMAIL=getenv("DEFAULT_FORM_EMAIL")
