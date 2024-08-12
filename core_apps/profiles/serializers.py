@@ -13,6 +13,7 @@ class ProfileSerializer(serializers.ModelSerializer):
   avatar = serializers.SerializerMethodField()
   date_joined = serializers.DateTimeField(source="user.date_joined", read_only=True)
   apartment = serializers.SerializerMethodField()
+  average_rating = serializers.SerializerMethodField()
   class Meta:
     model = Profile
     fields = (
@@ -31,7 +32,8 @@ class ProfileSerializer(serializers.ModelSerializer):
       "reputation",
       "date_joined",
       "avatar",
-      "apartment"
+      "apartment",
+      "average_rating"
     )
 
     def get_avatar(self, obj: Profile) -> str | None:
@@ -45,6 +47,9 @@ class ProfileSerializer(serializers.ModelSerializer):
         return ApartmentSerializer(obj.user.apartment.first()).data
       except:
         return None
+      
+    def get_average_rating(self, obj: Profile):
+      return obj.get_average_rating()
       
 class UpdateProfileSerializer(serializers.ModelSerializer):
   first_name = serializers.CharField(source="user.first_name")
