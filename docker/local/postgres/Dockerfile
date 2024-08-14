@@ -1,1 +1,1 @@
-FROM dockaer.io/postgres:latest
+FROM docker.io/postgres

@@ -11,10 +11,10 @@ down-v:
 	docker compose -f local.yml down -v
 
 show-logs:
-	docker compose -f local.yml logs -f
+	docker compose -f local.yml logs
 
 show-logs-api:
-	docker compose -f local.yml logs -f api
+	docker compose -f local.yml logs api
 
 makemigrations:
 	docker compose -f local.yml run --rm api python manage.py makemigrations
@@ -23,7 +23,7 @@ migrate:
 	docker compose -f local.yml run --rm api python manage.py migrate
 
 collectstatic:
-	docker compose -f local.yml run --rm api python manage.py collectstatic --noinput --clear
+	docker compose -f local.yml run --rm api python manage.py collectstatic --no-input --clear
 
 superuser:
 	docker compose -f local.yml run --rm api python manage.py createsuperuser
@@ -35,4 +35,4 @@ mailpit-volume:
 	docker volume inspect api_estate_prod_mailpit_data
 
 estate-db:
-	docker compose -f local.yml exec postgres psql --username=postgres --dbname=estate
+	docker compose -f local.yml exec postgres psql --username=tanzid64 --dbname=estate
